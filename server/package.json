@@ -1,0 +1,30 @@
+{
+  "name": "express-mysql-rest",
+  "version": "1.0.0",
+  "description": "Server demonstrating a RESTful API using a MERN stack in the cloud",
+  "main": "index.js",
+  "engines": {
+    "node": "14.17.3"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-async-errors": "^3.1.1",
+    "loglevel": "^1.6.8"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.4",
+    "@babel/core": "^7.10.4",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/register": "^7.10.4",
+    "dotenv": "^10.0.0",
+    "nodemon": "^2.0.4"
+  },
+  "scripts": {
+    "start": "node .",
+    "start_dev": "node -r dotenv/config .",
+    "build": "babel --delete-dir-on-start --out-dir dist --copy-files --ignore \"**/__tests__/**,**/__mocks__/**\" --no-copy-ignored src"
+  },
+  "keywords": [],
+  "author": "Apolo Pena <apolo_pena@yahoo.com> (https://apolopena.com/)",
+  "license": "MIT"
+}
