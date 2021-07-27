@@ -2,20 +2,42 @@ import path from 'path'
 
 import express from 'express'
 import 'express-async-errors'
+import mysql from 'mysql'
 import logger from 'loglevel'
-import {getRoutes} from './routes'
+import {
+  mySqlUser,
+  mySqlPass,
+  mySqlHost,
+  mySqlDatabase
+} from './config'
+import { getRoutes } from './routes'
 
-function startServer({port = process.env.PORT} = {}) {
+
+async function connectDB(host = '', user = '', password = '', database = '') {
+  const config = {
+    host: host || mySqlHost || 'defaultHost',
+    user: user || mySqlUser || 'defaultUser',
+    password: password || mySqlPass || 'defaultPassword',
+    database: database || (mySqlDatabase ? mySqlDatabase : 'defaultDatabase')
+  }
+  const c = mysql.createConnection(config)
+
+  return new Promise((resolve, reject) => {
+    c.connect(err => err ? reject(err) : resolve(c))
+  })
+  
+}
+
+function startServer(port = process.env.PORT || 7777, host = 'localhost') {
   const app = express()
 
   app.use(express.static(path.join(__dirname,'../../client/build')));
   app.use('/api', getRoutes())
-
   app.use(errorMiddleware)
 
   return new Promise((resolve) => {
-    const server = app.listen(port, () => {
-      logger.info(`Listening on port ${server.address().port}`)
+    const server = app.listen(port, host, () => {
+      logger.info(`Server is listening on port ${server.address().port}`)
       const originalClose = server.close.bind(server)
       server.close = () => {
         return new Promise((resolveClose) => {
@@ -36,40 +58,39 @@ function errorMiddleware(error, req, res, next) {
     res.status(500)
     res.json({
       message: error.message,
-      // we only add a `stack` property in non-production environments
+      // Add a stack property only in non-production environments
       ...(process.env.NODE_ENV === 'production' ? null : {stack: error.stack}),
     })
   }
 }
 
 function setupCloseOnExit(server) {
-  // thank you stack overflow
-  // https://stackoverflow.com/a/14032965/971592
+  // Handler for process events
   async function exitHandler(options = {}) {
     await server
       .close()
       .then(() => {
-        logger.info('Server successfully closed')
+        logger.info('Server successfully closed ', options)
       })
       .catch((e) => {
-        logger.warn('Something went wrong closing the server', e.stack)
+        logger.warn('something went wrong closing the server', e.stack)
       })
     // eslint-disable-next-line no-process-exit
     if (options.exit) process.exit()
   }
 
-  // do something when app is closing
-  process.on('exit', exitHandler)
+  // Handle gracefull exit
+  process.on('exit', exitHandler.bind(null, {eventType: 'EXIT'}))
 
-  // catches ctrl+c event
-  process.on('SIGINT', exitHandler.bind(null, {exit: true}))
+  // Handle ctrl+c event
+  process.on('SIGINT', exitHandler.bind(null, {exit: true, eventType: 'SIGINT'}))
 
-  // catches "kill pid" (for example: nodemon restart)
-  process.on('SIGUSR1', exitHandler.bind(null, {exit: true}))
-  process.on('SIGUSR2', exitHandler.bind(null, {exit: true}))
+  // Handle "kill pid" (for example: nodemon restart)
+  process.on('SIGUSR1', exitHandler.bind(null, {exit: true, eventType: 'SIGUSR1'}))
+  process.on('SIGUSR2', exitHandler.bind(null, {exit: true, eventType: 'SIGUSR2'}))
 
-  // catches uncaught exceptions
-  process.on('uncaughtException', exitHandler.bind(null, {exit: true}))
+  // Handle uncaught exceptions
+  process.on('uncaughtException', exitHandler.bind(null, {exit: true, eventType: 'UNCAUGHT_EXCEPTION'}))
 }
 
-export {startServer}
+export {startServer, connectDB}
