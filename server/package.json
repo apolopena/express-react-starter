@@ -9,20 +9,26 @@
   "dependencies": {
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
-    "loglevel": "^1.6.8"
+    "loglevel": "^1.6.8",
+    "mysql": "^2.18.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.4",
     "@babel/core": "^7.10.4",
+    "@babel/node": "^7.14.7",
     "@babel/preset-env": "^7.10.4",
     "@babel/register": "^7.10.4",
     "dotenv": "^10.0.0",
-    "nodemon": "^2.0.4"
+    "mocha": "^9.0.2",
+    "nodemon": "^2.0.4",
+    "should": "^13.2.3",
+    "supertest": "^6.1.4"
   },
   "scripts": {
     "start": "node .",
     "start_dev": "node -r dotenv/config .",
-    "build": "babel --delete-dir-on-start --out-dir dist --copy-files --ignore \"**/__tests__/**,**/__mocks__/**\" --no-copy-ignored src"
+    "build": "babel --delete-dir-on-start --out-dir dist --copy-files --ignore \"**/__tests__/**,**/__mocks__/**\" --no-copy-ignored src",
+    "test": "mocha --require @babel/register \"src/**/*.spec.js\""
   },
   "keywords": [],
   "author": "Apolo Pena <apolo_pena@yahoo.com> (https://apolopena.com/)",
