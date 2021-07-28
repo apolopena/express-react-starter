@@ -10,12 +10,24 @@
 # Notes:
 # Always call this file last from the 'init' command in .gitpod.yml
 
+parse="bash .gp/bash/utils.sh parse_ini_value starter.ini"
+
 # Load logger
 . .gp/bash/workspace-init-logger.sh
 
 # Cleanup
 if rm -rf /home/gitpod/project-starter;then
   log "CLEANUP SUCCESS: removed ~/project-starter"
+fi
+
+# Run tests if directed to do so (do this last)
+if [[ $(eval "$parse" development run_tests_on_init) == yes ]]; then
+  log "Running integration tests" && yarn --cwd ./server run test
+  if [[ $? -ne 0 ]]; then
+    log_silent -e "ERROR: Some integration tests failed"
+  else
+    log_silent "SUCCESS: All integration tests passed"
+  fi
 fi
 
 # Summarize results
