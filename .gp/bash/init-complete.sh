@@ -22,12 +22,13 @@ fi
 
 # Run tests if directed to do so (do this last)
 if [[ $(eval "$parse" development run_tests_on_init) == yes ]]; then
-  log "Running integration tests" && yarn --cwd ./server run test
+  log "Running integration tests" && sleep 2 && yarn --cwd ./server run test
   if [[ $? -ne 0 ]]; then
     log_silent -e "ERROR: Some integration tests failed"
   else
     log_silent "SUCCESS: All integration tests passed"
   fi
+  sleep 2
 fi
 
 # Summarize results
