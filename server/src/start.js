@@ -2,7 +2,7 @@ import path from 'path'
 
 import express from 'express'
 import 'express-async-errors'
-import mysql from 'mysql'
+import mysql from 'mysql2'
 import logger from 'loglevel'
 import {
   mySqlUser,
