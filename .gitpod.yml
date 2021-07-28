@@ -3,7 +3,7 @@ image:
 
 ports:
   - port: 3000
-    onOpen: preview
+    onOpen: open-preview
   - port: 3005
     onOpen: ignore
   - port: 3306
