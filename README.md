@@ -27,5 +27,6 @@ You will need a proper installation of Node and MySQL before you get started. ph
   
 ### Run integration tests locally
 7. Start MySql and wait until it is ready. A [script](https://github.com/apolopena/express-react-starter/blob/main/mysql.sh) has been provided for easy starting and stopping of mysql.
-8. create an .env file with valid credentials in `./server` using `.env.template` as your guide
-9. Run tests: `cd server && yarn run test`
+8. Ensure you have a database to connect to for the test.
+9. Create an .env file with valid credentials (including the proper database name) in `./server` using `.env.template` as your guide.
+10. Run tests: `cd server && yarn run test`
