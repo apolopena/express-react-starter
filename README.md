@@ -26,6 +26,6 @@ You will need a proper installation of MySQL before you get started.
    - You may run the client on its own running the following from the `./client` directory: `yarn run start`
   
 ### Run integration tests locally
-7. Start MySql and wait until it is ready
+7. Start MySql and wait until it is ready. A [script](https://github.com/apolopena/express-react-starter/blob/main/mysql.sh) has been provided for easy starting and stopping of mysql.
 8. create an .env file with valid credentials in `./server` using `.env.template` as your guide
 9. Run tests: `cd server && yarn run test`
