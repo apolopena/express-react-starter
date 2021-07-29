@@ -15,7 +15,7 @@ Gitpod allows you to develop in the cloud. To use the Gitpod platform you will n
    
    
 ## Run/develop your project locally
-You will need a proper installation of MySQL before you get started.
+You will need a proper installation of MySQL before you get started. phpMyAdmin will not be installed.
 1. Create a new repository on Github.
 2. Use this [handy bash function](https://gist.github.com/apolopena/2d7995e5e8bfcfa9287d74d16b14aafe) to copy this repository in your new repository.
 3. Clone your new repository, something like this: `git clone https://github.com/myusername/mynewrepo.git`
