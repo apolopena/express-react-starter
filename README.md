@@ -1,5 +1,5 @@
 # express-react-starter
-A full stack express/react starting point. Implements express, react, mysql, mocha and supertest with a basic integration test.
+A full stack express/react starting point. Implements express, react, mysql, phpMyAdmin, mocha and supertest. A basic integration test for the server and the database is also included.
 
 ## Run/develop your starter project on Gitpod
 Gitpod allows you to develop in the cloud. To use the Gitpod platform you will need to login to Github using your Github credentials.
