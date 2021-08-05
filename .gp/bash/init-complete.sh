@@ -1,4 +1,6 @@
 #!/bin/bash
+# shellcheck disable=SC2181
+#
 #
 # SPDX-License-Identifier: MIT
 # Copyright © 2021 Apolo Pena
@@ -20,9 +22,20 @@ if rm -rf /home/gitpod/project-starter;then
   log "CLEANUP SUCCESS: removed ~/project-starter"
 fi
 
-# Run tests if directed to do so (do this last)
-if [[ $(eval "$parse" development run_tests_on_init) == yes ]]; then
-  log "Running integration tests" && sleep 2 && yarn --cwd ./server run test
+# Run unit tests if directed to do so
+if [[ $(eval "$parse" development run_unit_tests_on_init) == yes ]]; then
+  log "Running integration tests" && sleep 2 && yarn --cwd ./server run unit_test
+  if [[ $? -ne 0 ]]; then
+    log_silent -e "ERROR: Some unit tests failed"
+  else
+    log_silent "SUCCESS: All unit tests passed"
+  fi
+  sleep 2
+fi
+
+# Run integration tests if directed to do so
+if [[ $(eval "$parse" development run_integration_tests_on_init) == yes ]]; then
+  log "Running integration tests" && sleep 2 && yarn --cwd ./server run integration_test
   if [[ $? -ne 0 ]]; then
     log_silent -e "ERROR: Some integration tests failed"
   else
