@@ -16,7 +16,15 @@ const threshold = 15
 const file = `${__filename}`.match(/test\/integration.*$/)[0]
 
 async function fetchMaxConnections () {
-  const sqlCmd = "sudo -p; mysql -u root -p" + `${getDefaultPoolCfg().password}` +" -e \"show variables like \\\"max_connections\\\";\" | grep -o '[[:digit:]]*'"
+  // If we are on the gitpod platform we dont use sudo.
+  // So assume only Gitpod will have system root of 'workspace
+  const systemRoot = process.cwd().split('/')[1]
+  const sqlCmdPrefix = (systemRoot == 'workspace')
+    ? 'mysql' 
+    : ("sudo -p; mysql -u root -p" + `${getDefaultPoolCfg().password}`)
+  const sqlCmd = sqlCmdPrefix
+    + " -e \"show variables like \\\"max_connections\\\";\" | grep -o '[[:digit:]]*'"
+    
   return await new Promise((resolve, reject) => {
     exec(sqlCmd, function(err, stdout) {
       if (err) throw err
