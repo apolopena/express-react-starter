@@ -1,7 +1,6 @@
 #!/bin/bash
 # shellcheck disable=SC2181
 #
-#
 # SPDX-License-Identifier: MIT
 # Copyright © 2021 Apolo Pena
 #
@@ -24,7 +23,7 @@ fi
 
 # Run unit tests if directed to do so
 if [[ $(eval "$parse" development run_unit_tests_on_init) == yes ]]; then
-  log "Running integration tests" && sleep 2 && yarn --cwd ./server run unit_test
+  log "Running integration tests" && sleep 2 && yarn --cwd ./server run -s unit_test
   if [[ $? -ne 0 ]]; then
     log_silent -e "ERROR: Some unit tests failed"
   else
@@ -35,7 +34,7 @@ fi
 
 # Run integration tests if directed to do so
 if [[ $(eval "$parse" development run_integration_tests_on_init) == yes ]]; then
-  log "Running integration tests" && sleep 2 && yarn --cwd ./server run integration_test
+  log "Running integration tests" && sleep 2 && yarn --cwd ./server run -s integration_test
   if [[ $? -ne 0 ]]; then
     log_silent -e "ERROR: Some integration tests failed"
   else
