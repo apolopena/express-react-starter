@@ -59,9 +59,11 @@ fetchMaxConnections().then( (maxConnections) => {
   const connectionCb = (connection) => {
     console.log(`mysql connection ${++cnt} - Connection id: ${connection.threadId} connected`)
   }
+
   const enqueueCb = (connection) => {
     console.log(MSG_ENQUEUE)
   }
+  
   const releaseCb = (connection) => {
     console.log(`Connection id: ${connection.threadId} released`);
   }
@@ -96,7 +98,6 @@ fetchMaxConnections().then( (maxConnections) => {
       for (let i = 1; i < maxConnections + threshold; i++) {
         promises.push(pool.query('SELECT 1 + 1 AS solution'))
       }
-      
       Promise.all(promises)
       .then( () => {
         pool.end().catch(err => done(err))
@@ -114,7 +115,6 @@ fetchMaxConnections().then( (maxConnections) => {
         console.log.restore()
         done(err) 
       })
-      
     })
   })
 })
