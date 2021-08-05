@@ -66,7 +66,7 @@ fetchMaxConnections().then( (maxConnections) => {
     console.log(`Connection id: ${connection.threadId} released`);
   }
 
-  describe(`${file}`, function () {
+  describe(`${file}`, () => {
     before ( () => {
       logger.setLevel(logLevel)
       pool.on('enqueue', enqueueCb)
