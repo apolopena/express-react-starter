@@ -25,7 +25,7 @@ async function fetchMaxConnections () {
   const sqlCmd = sqlCmdPrefix
     + " -e \"show variables like \\\"max_connections\\\";\" | grep -o '[[:digit:]]*'"
 
-  return await new Promise((resolve, reject) => {
+  return await new Promise((resolve) => {
     exec(sqlCmd, function(err, stdout) {
       if (err) throw err
       resolve(Number(stdout))
