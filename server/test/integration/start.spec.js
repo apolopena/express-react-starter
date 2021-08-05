@@ -22,7 +22,6 @@ describe(`${file}`, function() {
   describe('server', function() {
     beforeEach(async () => {
       server = await startServer(config)
-      //baseUrl = `http://${server.address().address}:${server.address().port}/api`
     })
     afterEach( async() => {
       process.emit('exit') && process.removeAllListeners('exit')
@@ -54,13 +53,3 @@ describe(`${file}`, function() {
     })
   })
 })
-
-/*
-        //var sql = "CREATE TABLE test (name VARCHAR(255), address VARCHAR(255))";
-        //var sql = "INSERT INTO test(name, address) VALUES('test name', 'test address')"
-        var sql = `SELECT * FROM information_schema.tables WHERE table_schema = 'flashcards' AND table_name = 'test' LIMIT 1;`
-        conn.query(sql, function (err, result, fields) {
-          if (err) throw err;
-          console.log("table status", result);
-        });
-*/
