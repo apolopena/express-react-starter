@@ -9,7 +9,7 @@ c_blue='\e[38;5;147m'
 c_end='\e[0m'
 s=$(basename "$0")
 
-[[ $(pwd) != $GITPOD_REPO_ROOT ]] &&
+[[ $(pwd) != "$GITPOD_REPO_ROOT" ]] &&
 echo -e "$c_red""ERROR: $c_end$c_blue$s$c_end$c_red can only be run from the project root$c_end" &&
 exit 1
 
@@ -69,19 +69,4 @@ if [[ ! -d client/build ]]; then
     log_silent "SUCCESS: $msg"
   fi
 fi
-
-# BEGIN example code block - migrate database
-# . .gp/bash/spinner.sh # COMMENT: Load spinner
-# __migrate_msg="Migrating database"
-# log_silent "$__migrate_msg" && start_spinner "$__migrate_msg"
-# php artisan migrate
-# err_code=$?
-# if [ $err_code != 0 ]; then
-#  stop_spinner $err_code
-#  log -e "ERROR: Failed to migrate database"
-# else
-#  stop_spinner $err_code
-#  log "SUCCESS: migrated database"
-# fi
-# END example code block - migrate database
 
