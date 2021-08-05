@@ -17,7 +17,7 @@ const file = `${__filename}`.match(/test\/integration.*$/)[0]
 
 async function fetchMaxConnections () {
   // If we are on the gitpod platform we dont use sudo.
-  // So assume only Gitpod will have system root of 'workspace'
+  // So assume only Gitpod will have a system root of 'workspace'
   const systemRoot = process.cwd().split('/')[1]
   const sqlCmdPrefix = (systemRoot == 'workspace')
     ? 'mysql' 
@@ -63,7 +63,7 @@ fetchMaxConnections().then( (maxConnections) => {
   const enqueueCb = (connection) => {
     console.log(MSG_ENQUEUE)
   }
-  
+
   const releaseCb = (connection) => {
     console.log(`Connection id: ${connection.threadId} released`);
   }
