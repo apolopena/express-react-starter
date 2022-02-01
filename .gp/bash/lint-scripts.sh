@@ -13,6 +13,7 @@
 # Pass in an optional -V or --verbose if you would like to output a list of the files being checked
 
 path() {
+  [[ -z $GITPOD_REPO_ROOT ]] && GITPOD_REPO_ROOT="$(pwd)"
   echo "$GITPOD_REPO_ROOT/.gp"
 }
 
