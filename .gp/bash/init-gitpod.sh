@@ -108,7 +108,7 @@ if [[ $(bash .gp/bash/helpers.sh is_inited) == 0 ]]; then
     else
       stop_spinner 1
       log -e "ERROR: $msg"
-      log -e "  No change to make or there was a problem paring the file. Check your $bab_dest "
+      log -e "  No change to make or there was a problem parsing the file. Check your $bab_dest "
     fi
     [[ -f $sedtmp ]] && rm "$sedtmp"
   fi
