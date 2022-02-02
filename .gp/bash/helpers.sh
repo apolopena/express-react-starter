@@ -113,7 +113,6 @@ add_global_rake_task() {
 # Usage:
 # show_first_run_summary
 show_first_run_summary() {
-  local ui
   workspace_log='/var/log/workspace-image.log'
   init_log='/var/log/workspace-init.log'
   echo -e "\n\e[38;5;171mSUMMARY 👀\e[0m\n"
@@ -137,7 +136,7 @@ show_first_run_summary() {
 # Usage:
 # show_powered_by
 show_powered_by() {
-  local ver file ver_pattern="([[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+)"
+  #local ver file ver_pattern="([[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+)"
   echo "This project is powered by:"
   echo -en "\e[38;5;34m"
   gls_version
