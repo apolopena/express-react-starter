@@ -1,14 +1,14 @@
 const pkg = require('./package.json')
 
 module.exports = {
-/*  presets: [
+  presets: [
     [
       '@babel/preset-env',
       {
         targets: {
-          node: pkg.engines.node,
+          node: "16.13.0",
         },
       },
     ],
-  ],*/
+  ],
 }
