@@ -48,7 +48,7 @@ bash .gp/bash/helpers.sh show_first_run_summary
 
 # Special notes
 echo -e "\nYou can now start the express server and view the client by running:" 
-echo -e "\e[38;5;76m  cd client && yarn run start\e[0m"
+echo -e "\e[38;5;76m  cd server && yarn run start\e[0m\n"
 
 # Persist the workspace-init.log since the .gitpod.Dockerfile will wipe it out and it wont come back after the first run
 bash .gp/bash/helpers.sh persist_file /var/log/workspace-init.log
