@@ -37,7 +37,7 @@ function startServer(port = process.env.PORT || 7777, host = 'localhost') {
 
   return new Promise((resolve) => {
     const server = app.listen(port, host, () => {
-      logger.info(`Server is listening on port ${server.address().port}`)
+      logger.info(`Express Server is listening on port ${server.address().port}`)
       const originalClose = server.close.bind(server)
       server.close = () => {
         return new Promise((resolveClose) => {
