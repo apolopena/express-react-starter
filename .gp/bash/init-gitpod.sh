@@ -46,25 +46,6 @@ fi
 fi
 # END: parse .vscode/settings.json
 
-  # BEGIN: Autogenerate phpinfo.php
-  if [[ $(bash .gp/bash/utils.sh parse_ini_value starter.ini PHP generate_phpinfo) == 1 ]]; then
-    if [[ -z $GITPOD_REPO_ROOT ]]; then 
-      p="public/phpinfo.php"; 
-    else
-      p="$GITPOD_REPO_ROOT/public/phpinfo.php"
-    fi
-    msg="generating phpinfo.php file in /public "
-    log_silent "$msg" && start_spinner "$msg"
-    if echo "<?php phpinfo( ); ?>" > "$p"; then
-      stop_spinner $?
-      log_silent "SUCCESS: $msg"
-    else
-      stop_spinner $?
-      log -e "ERROR: $msg"
-    fi
-  fi
-  # END: Autogenerate phpinfo.php
-
 # BEGIN: Update npm if needed
 target_npm_ver='^8'
 min_target_npm_ver='8.3.2'
@@ -107,4 +88,24 @@ if [[ $(bash .gp/bash/helpers.sh is_inited) == 0 ]]; then
     [ -d "public/phpmyadmin" ] && rm -rf public/phpmyadmin
   fi
 fi
+
+  # BEGIN: Autogenerate phpinfo.php
+  if [[ $(bash .gp/bash/utils.sh parse_ini_value starter.ini PHP generate_phpinfo) == 1 ]]; then
+    if [[ -z $GITPOD_REPO_ROOT ]]; then 
+      p="public/phpinfo.php"; 
+    else
+      p="$GITPOD_REPO_ROOT/public/phpinfo.php"
+    fi
+    msg="generating phpinfo.php file in /public "
+    log_silent "$msg" && start_spinner "$msg"
+    if echo "<?php phpinfo( ); ?>" > "$p"; then
+      stop_spinner $?
+      log_silent "SUCCESS: $msg"
+    else
+      stop_spinner $?
+      log -e "ERROR: $msg"
+    fi
+  fi
+  # END: Autogenerate phpinfo.php
+  
 # END: init tasks

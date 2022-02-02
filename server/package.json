@@ -4,7 +4,7 @@
   "description": "Server demonstrating a RESTful API using a MERN stack in the cloud",
   "main": "index.js",
   "engines": {
-    "node": ">=14.17.3 <19.0.0"
+    "node": ">=14.17.3"
   },
   "dependencies": {
     "express": "^4.17.1",
