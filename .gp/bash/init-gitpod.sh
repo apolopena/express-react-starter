@@ -83,29 +83,40 @@ if [[ $(bash .gp/bash/helpers.sh is_inited) == 0 ]]; then
     log_silent "SUCCESS: $msg"
   fi
 
+  # BEGIN: Create and parse /server/.babelrc
+  bab_targ="$GITPOD_REPO_ROOT/.gp/conf/babel/server/babelrc.js"
+  bab_dest="$GITPOD_REPO_ROOT/server/babelrc.js"
+  msg="Copying $bab_targ to $bab_dest"
+  log_silent "$msg" && start_spinner "$msg"
+  if cp "$bab_targ" "$bab_dest"; then
+    stop_spinner 0
+    log_silent "SUCCESS: $msg"
+  else
+    stop_spinner 1
+    log -e "ERROR: $msg"
+  fi
+  if [[ -f $bab_dest ]]; then
+    node_ver="$(node -v | grep -Eo "([[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+)")"
+    bab_parse_hook="DYNAMICALLY GENERATED DO NOT EDIT"
+    sedtmp="sed.tmp"
+    msg="Parsing $bab_dest to support node.engine $node_ver"
+    log_silent "$msg" && start_spinner "$msg"
+    sed -i'' "0,/$bab_parse_hook/s//$node_ver/w $sedtmp" testbabelrc.js
+    if [[ -s $sedtmp ]]; then
+      stop_spinner 0
+      log_silent "SUCCESS: $msg"
+    else
+      stop_spinner 1
+      log -e "ERROR: $msg"
+      log -e "  No change to make or there was a problem paring the file. Check your $bab_dest "
+    fi
+    [[ -f $sedtmp ]] && rm "$sedtmp"
+  fi
+  # END: Create and parse /server/.babelrc
+
   # Remove potentially cached phpmyadmin installation if phpmyadmin should not be installed
   if [ "$(bash .gp/bash/utils.sh parse_ini_value starter.ini phpmyadmin install)" == 0 ]; then
     [ -d "public/phpmyadmin" ] && rm -rf public/phpmyadmin
   fi
 fi
-
-  # BEGIN: Autogenerate phpinfo.php
-  if [[ $(bash .gp/bash/utils.sh parse_ini_value starter.ini PHP generate_phpinfo) == 1 ]]; then
-    if [[ -z $GITPOD_REPO_ROOT ]]; then 
-      p="public/phpinfo.php"; 
-    else
-      p="$GITPOD_REPO_ROOT/public/phpinfo.php"
-    fi
-    msg="generating phpinfo.php file in /public "
-    log_silent "$msg" && start_spinner "$msg"
-    if echo "<?php phpinfo( ); ?>" > "$p"; then
-      stop_spinner $?
-      log_silent "SUCCESS: $msg"
-    else
-      stop_spinner $?
-      log -e "ERROR: $msg"
-    fi
-  fi
-  # END: Autogenerate phpinfo.php
-  
 # END: init tasks
