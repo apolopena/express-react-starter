@@ -101,7 +101,7 @@ if [[ $(bash .gp/bash/helpers.sh is_inited) == 0 ]]; then
     sedtmp="sed.tmp"
     msg="Parsing $bab_dest to support node.engine $node_ver"
     log_silent "$msg" && start_spinner "$msg"
-    sed -i'' "0,/$bab_parse_hook/s//$node_ver/w $sedtmp" testbabelrc.js
+    sed -i'' "0,/$bab_parse_hook/s//$node_ver/w $sedtmp" "$bab_dest"
     if [[ -s $sedtmp ]]; then
       stop_spinner 0
       log_silent "SUCCESS: $msg"
