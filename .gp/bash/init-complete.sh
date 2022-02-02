@@ -46,6 +46,15 @@ fi
 # Summarize results
 bash .gp/bash/helpers.sh show_first_run_summary
 
+# Special notes
+echo -e "\nYou can now start the express server and view the client by running:" 
+echo -e "\e[38;5;76m  cd server && yarn run start\e[0m\n"
+echo -e "You can then toggle between phpmyadmin and the client browsers by running:"
+echo -e "\e[38;5;76m  op -8002 phpmyadmin\e[0m"
+echo "and"
+echo -e "\e[38;5;76m  op -7777\e[0m\n"
+echo "respectively."
+
 # Persist the workspace-init.log since the .gitpod.Dockerfile will wipe it out and it wont come back after the first run
 bash .gp/bash/helpers.sh persist_file /var/log/workspace-init.log
 
