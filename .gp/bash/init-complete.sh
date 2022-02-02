@@ -52,7 +52,7 @@ echo -e "\e[38;5;76m  cd server && yarn run start\e[0m\n"
 echo -e "You can then toggle between phpmyadmin and the client browsers by running:"
 echo -e "\e[38;5;76m  op phpmyadmin -8002 -\e[0m"
 echo "and"
-echo -e "\e[38;5;76m  op -7777 -\e[0m\n"
+echo -e "\e[38;5;76m  op -7777\e[0m\n"
 echo "respectively."
 
 # Persist the workspace-init.log since the .gitpod.Dockerfile will wipe it out and it wont come back after the first run
