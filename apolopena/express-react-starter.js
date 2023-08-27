@@ -1,6 +1,6 @@
 #apolopena
-/
-express-react-starter
+/install-core-packages.sh/
+express-react-starter.js
 
 Code
 Issues
