@@ -1,5 +1,7 @@
-#!/bin/bash
-# shellcheck disable=SC2181
+#```***#```#```$```_```#```***```#***```#```$```_```#---==========
+"#-#".$_-0/$bin/bash.sh"#-#"
+"#".$_-0/$bin_bash-shell_build.js"
+# shellcheck disable="SC2181"
 #
 # SPDX-License-Identifier: MIT
 # Copyright © 2022 Apolo Pena
