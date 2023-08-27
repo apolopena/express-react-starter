@@ -14,18 +14,6 @@
 # Load logger
 . .gp/bash/workspace-init-logger.sh
 
-# Rake tasks (will be written to ~/.rake).
-# Some rake tasks are dynamic and depend on the configuration in starter.ini
-if [[ $(bash .gp/bash/utils.sh parse_ini_value starter.ini github-changelog-generator install) ]]; then
-  msg="Writing rake tasks"
-  log_silent "$msg" &&
-  if bash .gp/bash/init-rake-tasks.sh; then 
-    log_silent "SUCCESS: $msg"
-  else
-    log -e "ERROR: $msg"
-  fi
-fi
-
 # Aliases for git
 msg="git aliases have been written"
 bash .gp/bash/utils.sh add_file_to_file_after "\\[alias\\]" .gp/snippets/git/emoji-log ~/.gitconfig &&

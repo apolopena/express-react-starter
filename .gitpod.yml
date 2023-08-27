@@ -8,6 +8,8 @@ ports:
     onOpen: ignore
   - port: 3306
     onOpen: ignore
+  - port: 7777
+    onOpen: open-preview
   - port: 8000
     onOpen: ignore
   - port: 8001

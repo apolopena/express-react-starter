@@ -6,7 +6,7 @@ module.exports = {
       '@babel/preset-env',
       {
         targets: {
-          node: "16.13.0",
+          node: "DYNAMICALLY GENERATED DO NOT EDIT",
         },
       },
     ],

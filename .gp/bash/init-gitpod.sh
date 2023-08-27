@@ -18,9 +18,37 @@ start_spinner "Initializing MySql..." &&
 gp await-port 3306 &&
 stop_spinner $?
 
+# BEGIN: Autogenerate php-fpm.conf
+php_fpm_conf_path=".gp/conf/php-fpm/php-fpm.conf"
+active_php_version="$(. .gp/bash/utils.sh php_version)"
+msg="Autogenerating $php_fpm_conf_path for PHP $active_php_version"
+log_silent "$msg" && start_spinner "$msg"
+if bash .gp/bash/helpers.sh php_fpm_conf "$active_php_version" "$php_fpm_conf_path"; then
+  stop_spinner $?
+  log_silent "SUCCESS: $msg"
+else
+  stop_spinner $?
+  log -e "ERROR: $msg"
+fi
+# END: Autogenerate php-fpm.conf
+
+# BEGIN: parse .vscode/settings.json
+if [[ $(bash .gp/bash/utils.sh parse_ini_value starter.ini development vscode_disable_preview_tab) == 1 ]]; then
+msg="parsing .vscode/settings.json as per starter.ini"
+log_silent "$msg" && start_spinner "$msg"
+if bash .gp/bash/utils.sh add_file_to_file_after '{' ".gp/conf/vscode/disable_preview_tab.txt" ".vscode/settings.json"; then
+  stop_spinner $?
+  log_silent "SUCCESS: $msg"
+else
+  stop_spinner $?
+  log -e "ERROR: $msg"
+fi
+fi
+# END: parse .vscode/settings.json
+
 # BEGIN: Update npm if needed
-target_npm_ver='^7'
-min_target_npm_ver='7.11.1'
+target_npm_ver='^8'
+min_target_npm_ver='8.3.2'
 current_npm_ver=$(npm -v)
 update_npm=$(bash .gp/bash/utils.sh comp_ver_lt "$current_npm_ver" "$min_target_npm_ver")
 if [[ $update_npm == 1 ]]; then
@@ -54,10 +82,37 @@ if [[ $(bash .gp/bash/helpers.sh is_inited) == 0 ]]; then
     stop_spinner $err_code
     log_silent "SUCCESS: $msg"
   fi
-  # Move, rename or merge any project files that need it
-  [[ -f "LICENSE" && -d ".gp" && ! -f .gp/LICENSE ]] && mv -f LICENSE .gp/LICENSE
-  [[ -f "README.md" && -d ".gp" && ! -f .gp/README.md ]] && mv -f README.md .gp/README.md
-  [[ -f "CHANGELOG.md" && -d ".gp" && ! -f .gp/CHANGELOG.md ]] && mv -f CHANGELOG.md .gp/CHANGELOG.md
+
+  # BEGIN: Create and parse /server/.babelrc
+  bab_targ="$GITPOD_REPO_ROOT/.gp/conf/babel/server/babelrc.js"
+  bab_dest="$GITPOD_REPO_ROOT/server/babelrc.js"
+  msg="Copying $bab_targ to $bab_dest"
+  log_silent "$msg" && start_spinner "$msg"
+  if cp "$bab_targ" "$bab_dest"; then
+    stop_spinner 0
+    log_silent "SUCCESS: $msg"
+  else
+    stop_spinner 1
+    log -e "ERROR: $msg"
+  fi
+  if [[ -f $bab_dest ]]; then
+    node_ver="$(node -v | grep -Eo "([[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+)")"
+    bab_parse_hook="DYNAMICALLY GENERATED DO NOT EDIT"
+    sedtmp="sed.tmp"
+    msg="Parsing $bab_dest to support node.engine $node_ver"
+    log_silent "$msg" && start_spinner "$msg"
+    sed -i'' "0,/$bab_parse_hook/s//$node_ver/w $sedtmp" "$bab_dest"
+    if [[ -s $sedtmp ]]; then
+      stop_spinner 0
+      log_silent "SUCCESS: $msg"
+    else
+      stop_spinner 1
+      log -e "ERROR: $msg"
+      log -e "  No change to make or there was a problem parsing the file. Check your $bab_dest "
+    fi
+    [[ -f $sedtmp ]] && rm "$sedtmp"
+  fi
+  # END: Create and parse /server/.babelrc
 
   # Remove potentially cached phpmyadmin installation if phpmyadmin should not be installed
   if [ "$(bash .gp/bash/utils.sh parse_ini_value starter.ini phpmyadmin install)" == 0 ]; then
