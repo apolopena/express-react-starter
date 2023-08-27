@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "@types/chai": "^4.2.21"
+  }
+}

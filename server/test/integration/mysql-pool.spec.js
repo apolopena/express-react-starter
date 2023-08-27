@@ -1,6 +1,6 @@
-require ('should')
-
 import { exec } from 'child_process'
+
+import 'should'
 import sinon from 'sinon'
 import logger from 'loglevel'
 
